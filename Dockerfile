@@ -1,11 +1,10 @@
-ARG CENTOS_VER=docker.io/centos:8.2.2004
-FROM ${CENTOS_VER}
+FROM docker.io/centos:8.3.2011
 
 WORKDIR /root
 
 RUN rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 RUN yum install -y dnf-plugins-core epel-release
-RUN yum config-manager --set-enabled PowerTools
+RUN yum config-manager --set-enabled powertools
 
 RUN yum install -y \
         python3 \
@@ -22,7 +21,7 @@ RUN yum install -y \
         tbb-devel \
         rpm-build \
         rpmdevtools \
-        git \
+        git-core \
         libedit-devel \
         epel-release
 
