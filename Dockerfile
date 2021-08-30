@@ -7,29 +7,15 @@ RUN yum install -y dnf-plugins-core epel-release
 RUN yum config-manager --set-enabled powertools
 
 RUN yum install -y \
-        python3 \
-        python3-pip \
-        python3-devel \
-        python3-pybind11 \
-        make \
-        libuuid-devel \
-        json-c-devel \
-        gcc \
-        clang \
-        gcc-c++ \
-        hwloc-devel \
-        tbb-devel \
-        rpm-build \
-        rpmdevtools \
-        git-core \
-        libedit-devel \
-        epel-release
+        python3 python3-pip python3-devel python3-pybind11 cmake make libuuid-devel json-c-devel gcc clang gcc-c++ hwloc-devel tbb-devel rpm-build rpmdevtools git
 
-RUN python3 -m pip install setuptools --upgrade
-RUN python3 -m pip install wheel
-RUN python3 -m pip install python-pkcs11 cython pyyaml
+RUN dnf install -y libedit-devel
+RUN dnf install -y libudev-devel
+RUN dnf install -y libcap-devel
+RUN python3 -m pip install setuptools python-pkcs11 pyyaml jsonschema wheel
+
 WORKDIR /root
-RUN git clone -b hundeboll/feature/fpga_smartnic_n5010 https://github.com/OPAE/opae-sdk.git /root/opae-sdk
+RUN git clone -b release/2.0.6-1 https://github.com/OPAE/opae-sdk.git /root/opae-sdk
 
 RUN yum upgrade -y libarchive
 
@@ -49,7 +35,6 @@ RUN cmake .. --warn-uninitialized -Wno-dev \
     make VERBOSE=1 install -j4
 
 RUN cd /root/opae-sdk/python/opae.admin && python3 setup.py install --single-version-externally-managed --root=/opae
-RUN cd /root/opae-sdk/python/opae.io && python3 setup.py install --single-version-externally-managed --root=/opae
 RUN cd /root/opae-sdk/python/pacsign && python3 setup.py install --single-version-externally-managed --root=/opae
 RUN cd /root/opae-sdk/tools/extra/fpgadiag && python3 setup.py install --single-version-externally-managed --root=/opae
 
