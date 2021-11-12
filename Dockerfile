@@ -20,6 +20,7 @@ RUN git clone -b release/2.0.6-1 https://github.com/OPAE/opae-sdk.git /root/opae
 RUN yum upgrade -y libarchive
 
 WORKDIR /root/opae-sdk/build
+RUN sed -i 's/--use-local-refs//g' /root/opae-sdk/opae-libs/cmake/modules/OFS.cmake
 RUN cmake .. --warn-uninitialized -Wno-dev \
              -DCMAKE_INSTALL_PREFIX=/opae \
              -DCMAKE_BUILD_TYPE=Release \

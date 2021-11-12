@@ -1,6 +1,6 @@
 .PHONY: all image push
 
-IMAGE_REGISTRY ?= quay.io/ryan_raasch
+IMAGE_REGISTRY ?= quay.io/silicom
 VERSION ?= v2.0.6-1
 BUILDTOOL ?= docker
 
