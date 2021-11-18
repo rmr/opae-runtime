@@ -15,7 +15,12 @@ RUN dnf install -y libcap-devel
 RUN python3 -m pip install setuptools python-pkcs11 pyyaml jsonschema wheel
 
 WORKDIR /root
-RUN git clone -b release/2.0.6-1 https://github.com/OPAE/opae-sdk.git /root/opae-sdk
+RUN git clone https://github.com/OPAE/opae-sdk.git /root/opae-sdk
+
+ARG COMMIT_ID
+
+WORKDIR /root/opae-sdk
+RUN git checkout $COMMIT_ID
 
 RUN yum upgrade -y libarchive
 
