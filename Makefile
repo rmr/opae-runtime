@@ -3,7 +3,7 @@
 IMAGE_REGISTRY ?= quay.io/silicom
 VERSION 	   ?= v2.0.9-1
 BUILDTOOL 	   ?= docker
-COMMIT_ID 	   ?= ed354572
+COMMIT_ID 	   ?= def58e6
 
 IMAGE := $(IMAGE_REGISTRY)/opae-runtime:$(VERSION)-$(COMMIT_ID)
 
