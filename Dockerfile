@@ -1,13 +1,10 @@
-FROM docker.io/centos:8.3.2011
+FROM docker.io/rockylinux:8.5
 
 WORKDIR /root
 
 RUN rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 RUN yum install -y dnf-plugins-core epel-release
 RUN yum config-manager --set-enabled powertools
-
-RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*
-RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-*
 
 RUN yum install -y \
         python3 python3-pip python3-devel python3-pybind11 cmake make libuuid-devel json-c-devel gcc clang gcc-c++ hwloc-devel tbb-devel rpm-build rpmdevtools git
