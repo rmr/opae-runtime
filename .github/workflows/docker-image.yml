@@ -7,12 +7,20 @@ on:
     branches: [ master ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
+    - name: Update
+      run: sudo apt-get -y update
+    - name: Install xmllint
+      run: sudo apt-get install -y libxml2-utils
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: make
+      run: BUILDTOOL=docker make
+    - uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+      with:
+        registry: quay.io/silicom
+        username: ${{ secrets.QUAY_OPAE_USER }}
+        password: ${{ secrets.QUAY_OPAE_TOKEN }}
+    - name: Push
+      run: BUILDTOOL=docker make push

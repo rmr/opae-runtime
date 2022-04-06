@@ -15,5 +15,8 @@ image:
 check:
 	skopeo inspect docker://$(IMAGE)
 
+act:
+	curl https://raw.githubusercontent.com/nektos/act/master/install.sh | bash
+
 push:
 	$(BUILDTOOL) push $(IMAGE)
