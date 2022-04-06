@@ -1,16 +1,19 @@
 .PHONY: all image push
 
 IMAGE_REGISTRY ?= quay.io/silicom
-VERSION 	   ?= v2.0.9-1
-BUILDTOOL 	   ?= docker
-COMMIT_ID 	   ?= def58e6
+BUILDTOOL 	   ?= podman
 
-IMAGE := $(IMAGE_REGISTRY)/opae-runtime:$(VERSION)-$(COMMIT_ID)
+OPAE_ATOM := https://github.com/OPAE/opae-sdk/releases.atom
+OPAE_VERSION := $(shell curl -sL $(OPAE_ATOM) | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath 'string(//entry/title)' - | sort | tail -n1)
+IMAGE := $(IMAGE_REGISTRY)/opae-runtime:$(OPAE_VERSION)
 
 all: image
 
 image:
-	$(BUILDTOOL) build . --build-arg COMMIT_ID=$(COMMIT_ID) -t $(IMAGE)
+	$(BUILDTOOL) build . --build-arg OPAE_VERSION=$(OPAE_VERSION) -t $(IMAGE)
 
-push: image
+check:
+	skopeo inspect docker://$(IMAGE)
+
+push:
 	$(BUILDTOOL) push $(IMAGE)
